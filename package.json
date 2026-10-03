@@ -1,0 +1,42 @@
+{
+  "name": "kumafy",
+  "version": "1.0.0",
+  "description": "Desktop music player built with Electron",
+  "main": "main.js",
+  "author": "Mario",
+  "license": "MIT",
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder"
+  },
+  "devDependencies": {
+    "electron": "^44.5.1",
+    "electron-builder": "^26.15.3"
+  },
+  "build": {
+    "appId": "com.kumafy.app",
+    "productName": "Kumafy",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "index.html",
+      "styles.css",
+      "tracks.js",
+      "player.js",
+      "img/**/*",
+      "audio/**/*"
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "img/icon.png"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MK-1379/kumafy.git"
+  },
+  "homepage": "https://github.com/MK-1379/kumafy#readme"
+}

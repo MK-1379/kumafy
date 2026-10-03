@@ -1,0 +1,165 @@
+html {
+    height: 100%;
+}
+
+body {
+	background-color: #121212;
+	background-image: url('img/background.jpg');
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+	text-align: center;
+	font-family: Arial, sans-serif;
+	overflow: hidden;
+	-webkit-app-region: drag;
+}
+
+h1,
+h2,
+h3,
+h4 {
+	color: #757575;
+	font-style: italic;
+	-webkit-app-region: no-drag;
+}
+
+input {
+	-webkit-app-region: no-drag;
+}
+
+select {
+	-webkit-app-region: no-drag;
+	background: rgba(0, 0, 0, 0.75);
+
+	color: #757575;
+	border: 1px solid rgba(255, 255, 255, 0.2);
+	padding: 8px 12px;
+	border-radius: 8px;
+	font-size: 14px;
+	font-family: Arial, sans-serif;
+	font-style: italic;
+	outline: none;
+	cursor: pointer;
+
+}
+
+select:hover {
+	background: #444;
+}
+
+select option {
+	background: #1e1e1e;
+	color: #757575;
+	font-style: normal;
+}
+
+select option:hover{
+	background: #444;
+}
+
+.centro {
+	display: flex;
+	justify-content: center;
+}
+
+.imgcont {
+	width: 300px;
+	height: 300px;
+	border-radius: 15px;
+	overflow: hidden;
+	box-shadow: 0 15px 30px rgba(0, 0, 0, 0.6);
+	margin-bottom: 10px;
+	transition: transform 0.3s;
+}
+
+.imgcont:hover {
+	transform: scale(1.15);
+}
+
+.imgcont img {
+	width: 100%;
+}
+
+input[type="range"] {
+	-webkit-appearance: none;
+	appearance: none;
+	width: 300px;
+	height: 6px;
+	border-radius: 5px;
+	background: #757575;
+	cursor: pointer;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+	-webkit-appearance: none;
+	appearance: none;
+	width: 14px;
+	height: 14px;
+	background: #2f2f2f;
+	border-radius: 50%;
+}
+
+#tiempo {
+	color: #ccc;
+	font-size: 14px;
+	margin: 5px;
+}
+
+.botones input {
+	width: 30px;
+	padding: 10px;
+	border: none;
+	transition: transform 0.2s;
+	-webkit-app-region: no-drag;
+}
+
+.botones input:hover {
+	transform: scale(1.15);
+}
+
+.titlebar {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 30px;
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+	background: transparent;
+	padding-right: 0px;
+	-webkit-app-region: drag;
+}
+
+.drag-area {
+	flex: 1;
+	-webkit-app-region: drag;
+}
+
+.window-controls {
+	display: flex;
+	gap: 10px;
+	-webkit-app-region: no-drag;
+	margin-top: 10px;
+	margin-right: 10px;
+}
+
+.window-controls input {
+	cursor: pointer;
+	width: 25px;
+	height: 25px;
+}
+
+.window-controls button {
+	width: 40px;
+	height: 30px;
+	border: none;
+	background: transparent;
+	color: white;
+	cursor: pointer;
+	font-size: 14px;
+}
+
+.window-controls button:hover {
+	background: rgba(255, 255, 255, 0.15);
+}
