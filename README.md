@@ -2,8 +2,6 @@
 
 A compact desktop music player built with Electron. Pick a genre, hit play, and enjoy a small library of royalty-free tracks in a minimal, frameless window.
 
-![Kumafy screenshot](docs/screenshot.png)
-
 ## Features
 
 - Three genre playlists (Piano, Electronic, Pop & Indie) with a cover for each
