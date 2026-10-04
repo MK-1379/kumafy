@@ -2,6 +2,12 @@
 
 A compact desktop music player built with Electron. Pick a genre, hit play, and enjoy a small library of royalty-free tracks in a minimal, frameless window.
 
+## Screenshots
+
+![Piano playlist](docs/screenshots/piano.png)
+![Electronic playlist](docs/screenshots/electronic.png)
+![Pop and Indie playlist](docs/screenshots/pop-indie.png)
+
 ## Features
 
 - Three genre playlists (Piano, Electronic, Pop & Indie) with a cover for each
