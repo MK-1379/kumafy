@@ -47,6 +47,16 @@ button img {
 	border-radius: 6px;
 }
 
+#title,
+#artist {
+	max-width: 300px;
+	margin-left: auto;
+	margin-right: auto;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
 .genre-label {
 	display: block;
 	margin: 14px 0 8px;

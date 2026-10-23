@@ -3,7 +3,7 @@
 
 <head>
 	<meta charset="UTF-8">
-	<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' blob:; media-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+	<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' blob:; media-src 'self' blob: kumafy-media:; object-src 'none'; base-uri 'none'; form-action 'none'">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Kumafy</title>
 	<link rel="stylesheet" href="styles.css">
@@ -53,6 +53,7 @@
 		<button type="button" id="shuffleBtn" title="Shuffle (S)" aria-keyshortcuts="S" class="toggle" aria-label="Shuffle" aria-pressed="false"><img src="img/ShuffleAN.svg" alt=""></button>
 		<button type="button" id="repeatBtn" title="Repeat (R)" aria-keyshortcuts="R" class="toggle" aria-label="Repeat: off" aria-pressed="false"><img src="img/RepeatAN.svg" alt=""></button>
 		<button type="button" id="listBtn" title="Track list (L)" aria-keyshortcuts="L" aria-label="Track list" aria-expanded="false" aria-controls="trackPanel"><img src="img/ListAN.svg" alt=""></button>
+		<button type="button" id="openBtn" title="Open files (O)" aria-keyshortcuts="O" aria-label="Open audio files"><img src="img/OpenAN.svg" alt=""></button>
 		<button type="button" id="muteBtn" title="Mute (M)" aria-keyshortcuts="M" aria-label="Mute" aria-pressed="false"><img src="img/VolumeAN.svg" alt=""></button>
 		<input type="range" id="volume" min="0" max="1" step="0.01" value="1" aria-label="Volume">
 	</div>

@@ -15,6 +15,7 @@ describe("actionForKey", () => {
 		expect(actionForKey(press("ArrowRight"))).toBe("seekForward");
 		expect(actionForKey(press("ArrowDown"))).toBe("volumeDown");
 		expect(actionForKey(press("n"))).toBe("next");
+		expect(actionForKey(press("o"))).toBe("openFiles");
 		expect(actionForKey(press("Escape"))).toBe("closeTrackList");
 	});
 

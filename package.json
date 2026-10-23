@@ -27,6 +27,7 @@
 		},
 		"files": [
 			"main.js",
+			"media-range.js",
 			"preload.js",
 			"index.html",
 			"styles.css",

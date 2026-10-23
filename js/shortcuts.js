@@ -11,6 +11,7 @@ const KEY_ACTIONS = {
 	s: "shuffle",
 	r: "repeat",
 	l: "trackList",
+	o: "openFiles",
 	Escape: "closeTrackList",
 };
 

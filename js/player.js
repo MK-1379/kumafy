@@ -1,3 +1,4 @@
+import { LOCAL_GENRE, pickLocalFiles } from "./local-files.js";
 import {
 	createOrder,
 	formatTime,
@@ -41,12 +42,13 @@ const REPEAT_LABELS = {
 	one: "Repeat: one",
 };
 
+const library = { ...GENRES };
 const state = loadState(localStorage, GENRES);
 let order = [];
 let position = 0;
 
 function currentTracks() {
-	return GENRES[state.genre].tracks;
+	return library[state.genre].tracks;
 }
 
 function persist() {
@@ -63,11 +65,14 @@ function rebuildOrder() {
 }
 
 function loadTrack() {
-	const genre = GENRES[state.genre];
+	const genre = library[state.genre];
 	const track = genre.tracks[state.index];
-	audio.src = `audio/${track.file}`;
+	audio.crossOrigin = track.src ? "anonymous" : null;
+	audio.src = track.src ?? `audio/${track.file}`;
 	titleEl.textContent = track.title;
+	titleEl.title = track.title;
 	artistEl.textContent = track.artist;
+	artistEl.title = track.artist;
 	coverEl.src = genre.cover;
 	highlightCurrentTrack();
 	updateMediaMetadata(track, genre);
@@ -211,6 +216,16 @@ function seekBy(seconds) {
 	seekTo(audio.currentTime + seconds);
 }
 
+async function openLocalFiles() {
+	const tracks = await pickLocalFiles();
+	if (tracks.length === 0) return;
+
+	if (!library[LOCAL_GENRE]) addGenreOption(LOCAL_GENRE, "My files");
+	library[LOCAL_GENRE] = { label: "My files", cover: "img/icon.png", tracks };
+	switchGenre(LOCAL_GENRE);
+	play();
+}
+
 const shortcutActions = {
 	togglePlay,
 	seekForward: () => seekBy(SEEK_STEP),
@@ -223,6 +238,7 @@ const shortcutActions = {
 	shuffle: toggleShuffle,
 	repeat: cycleRepeat,
 	trackList: toggleTrackList,
+	openFiles: openLocalFiles,
 	closeTrackList: () => setTrackListOpen(false),
 };
 
@@ -258,7 +274,7 @@ async function updateMediaMetadata(track, genre) {
 	try {
 		const src = await artworkUrl(genre.cover);
 		if (navigator.mediaSession.metadata !== metadata) return;
-		metadata.artwork = [{ src, sizes: "600x600", type: "image/jpeg" }];
+		metadata.artwork = [{ src }];
 	} catch (error) {
 		console.warn("Could not load the artwork:", error);
 	}
@@ -300,20 +316,29 @@ function updateProgress() {
 	paintRange(progress, progressPercent(audio.currentTime, audio.duration));
 }
 
-for (const [key, genre] of Object.entries(GENRES)) {
+function addGenreOption(key, label) {
 	const option = document.createElement("option");
 	option.value = key;
-	option.textContent = genre.label;
+	option.textContent = label;
 	genreSelect.appendChild(option);
+}
+
+for (const [key, genre] of Object.entries(GENRES)) {
+	addGenreOption(key, genre.label);
+}
+
+function switchGenre(key) {
+	state.genre = key;
+	state.index = 0;
+	genreSelect.value = key;
+	rebuildOrder();
+	renderTrackList();
+	loadTrack();
 }
 
 genreSelect.addEventListener("change", (e) => {
 	const wasPlaying = !audio.paused;
-	state.genre = e.target.value;
-	state.index = 0;
-	rebuildOrder();
-	renderTrackList();
-	loadTrack();
+	switchGenre(e.target.value);
 	if (wasPlaying) play();
 });
 
@@ -322,6 +347,7 @@ $("stopBtn").addEventListener("click", stop);
 $("nextBtn").addEventListener("click", () => changeTrack(1));
 $("prevBtn").addEventListener("click", () => changeTrack(-1));
 listBtn.addEventListener("click", toggleTrackList);
+$("openBtn").addEventListener("click", openLocalFiles);
 
 muteBtn.addEventListener("click", toggleMute);
 volume.addEventListener("input", () => setVolume(Number(volume.value)));
