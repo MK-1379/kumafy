@@ -10,6 +10,7 @@ import {
 import { actionForKey, elementHandlesKey } from "./shortcuts.js";
 import { loadState, saveState } from "./storage.js";
 import { GENRES } from "./tracks.js";
+import { createVisualizer } from "./visualizer.js";
 
 const $ = (id) => document.getElementById(id);
 
@@ -29,6 +30,8 @@ const repeatBtn = $("repeatBtn");
 const listBtn = $("listBtn");
 const trackPanel = $("trackPanel");
 const trackList = $("trackList");
+const coverBox = document.querySelector(".imgcont");
+const visualizer = createVisualizer(audio, $("visualizer"));
 
 const SEEK_STEP = 5;
 const VOLUME_STEP = 0.05;
@@ -233,20 +236,32 @@ function handleKeydown(event) {
 
 const hasMediaSession = "mediaSession" in navigator;
 
-function updateMediaMetadata(track, genre) {
+const artworkUrls = new Map();
+
+async function artworkUrl(cover) {
+	if (!artworkUrls.has(cover)) {
+		const response = await fetch(cover);
+		artworkUrls.set(cover, URL.createObjectURL(await response.blob()));
+	}
+	return artworkUrls.get(cover);
+}
+
+async function updateMediaMetadata(track, genre) {
 	if (!hasMediaSession) return;
-	navigator.mediaSession.metadata = new MediaMetadata({
+	const metadata = new MediaMetadata({
 		title: track.title,
 		artist: track.artist,
 		album: genre.label,
-		artwork: [
-			{
-				src: new URL(genre.cover, location.href).href,
-				sizes: "600x600",
-				type: "image/jpeg",
-			},
-		],
 	});
+	navigator.mediaSession.metadata = metadata;
+
+	try {
+		const src = await artworkUrl(genre.cover);
+		if (navigator.mediaSession.metadata !== metadata) return;
+		metadata.artwork = [{ src, sizes: "600x600", type: "image/jpeg" }];
+	} catch (error) {
+		console.warn("Could not load the artwork:", error);
+	}
 }
 
 function updatePositionState() {
@@ -321,8 +336,16 @@ audio.addEventListener("loadedmetadata", () => {
 });
 audio.addEventListener("timeupdate", updateProgress);
 audio.addEventListener("ended", handleEnded);
-audio.addEventListener("play", renderPlayButton);
-audio.addEventListener("pause", renderPlayButton);
+audio.addEventListener("play", () => {
+	renderPlayButton();
+	coverBox.classList.add("is-playing");
+	visualizer.start();
+});
+audio.addEventListener("pause", () => {
+	renderPlayButton();
+	coverBox.classList.remove("is-playing");
+	visualizer.stop();
+});
 audio.addEventListener("seeked", updatePositionState);
 progress.addEventListener("input", () => {
 	audio.currentTime = progress.value;
