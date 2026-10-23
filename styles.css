@@ -49,7 +49,7 @@ button img {
 
 .genre-label {
 	display: block;
-	margin: 1.33em 0;
+	margin: 14px 0 8px;
 	color: #757575;
 	font-weight: bold;
 	font-style: italic;
@@ -86,9 +86,11 @@ select option:hover {
 .centro {
 	display: flex;
 	justify-content: center;
+	margin-top: 32px;
 }
 
 .imgcont {
+	position: relative;
 	width: 300px;
 	height: 300px;
 	border-radius: 15px;
@@ -98,7 +100,7 @@ select option:hover {
 	transition: transform 0.3s;
 }
 
-.imgcont:hover {
+.imgcont:not(:has(.track-panel:not([hidden]))):hover {
 	transform: scale(1.15);
 }
 
@@ -131,10 +133,80 @@ input[type="range"]::-webkit-slider-thumb {
 	margin: 5px;
 }
 
+.botones {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-top: 22px;
+}
+
 .botones button {
 	width: 50px;
 	padding: 10px;
 	transition: transform 0.2s;
+}
+
+.secundarios {
+	margin-top: 4px;
+}
+
+.secundarios button {
+	width: 42px;
+	padding: 6px;
+}
+
+.toggle[aria-pressed="false"] img {
+	opacity: 0.45;
+}
+
+#volume {
+	width: 90px;
+	margin-left: 8px;
+}
+
+.track-panel {
+	position: absolute;
+	inset: 0;
+	overflow-y: auto;
+	background: rgba(0, 0, 0, 0.85);
+	text-align: left;
+}
+
+.track-panel ol {
+	list-style: none;
+	margin: 0;
+	padding: 8px;
+}
+
+.track-panel button {
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+	width: 100%;
+	padding: 10px 12px;
+	border-radius: 8px;
+	color: #9e9e9e;
+	font: inherit;
+	text-align: left;
+}
+
+.track-panel button:hover {
+	background: rgba(255, 255, 255, 0.08);
+}
+
+.track-panel button[aria-current="true"] {
+	background: rgba(255, 255, 255, 0.12);
+	color: #ced7d7;
+}
+
+.track-title {
+	font-size: 15px;
+	font-style: italic;
+	font-weight: bold;
+}
+
+.track-artist {
+	font-size: 13px;
 }
 
 .botones button:hover {
