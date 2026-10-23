@@ -17,11 +17,13 @@
 			<button type="button" id="closeBtn" aria-label="Close"><img src="img/CrossAN.png" alt=""></button>
 		</div>
 	</div>
-	<br><br>
 
 	<div class="centro">
 		<div class="imgcont">
 			<img id="cover" alt="Genre cover">
+			<div id="trackPanel" class="track-panel" hidden>
+				<ol id="trackList" aria-label="Tracks"></ol>
+			</div>
 		</div>
 	</div>
 
@@ -39,15 +41,19 @@
 
 	<input type="range" id="progress" min="0" value="0" step="0.1" aria-label="Seek">
 
-	<br><br><br>
-
 	<div class="botones">
 		<button type="button" id="prevBtn" aria-label="Previous"><img src="img/PrevAN.png" alt=""></button>
 		<button type="button" id="playBtn" aria-label="Play"><img src="img/PlayAN.png" alt=""></button>
-		<button type="button" id="pauseBtn" aria-label="Pause"><img src="img/PauseAN.png" alt=""></button>
 		<button type="button" id="stopBtn" aria-label="Stop"><img src="img/StopAN.png" alt=""></button>
-		<button type="button" id="muteBtn" aria-label="Mute" aria-pressed="false"><img src="img/MuteAN.png" alt=""></button>
 		<button type="button" id="nextBtn" aria-label="Next"><img src="img/NextAN.png" alt=""></button>
+	</div>
+
+	<div class="botones secundarios">
+		<button type="button" id="shuffleBtn" class="toggle" aria-label="Shuffle" aria-pressed="false"><img src="img/ShuffleAN.svg" alt=""></button>
+		<button type="button" id="repeatBtn" class="toggle" aria-label="Repeat: off" aria-pressed="false"><img src="img/RepeatAN.svg" alt=""></button>
+		<button type="button" id="listBtn" aria-label="Track list" aria-expanded="false" aria-controls="trackPanel"><img src="img/ListAN.svg" alt=""></button>
+		<button type="button" id="muteBtn" aria-label="Mute" aria-pressed="false"><img src="img/VolumeAN.svg" alt=""></button>
+		<input type="range" id="volume" min="0" max="1" step="0.01" value="1" aria-label="Volume">
 	</div>
 
 	<script type="module" src="js/player.js"></script>
