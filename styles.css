@@ -23,8 +23,36 @@ h4 {
 	-webkit-app-region: no-drag;
 }
 
-input {
+input,
+button,
+label {
 	-webkit-app-region: no-drag;
+}
+
+button {
+	background: none;
+	border: none;
+	padding: 0;
+	cursor: pointer;
+}
+
+button img {
+	display: block;
+	width: 100%;
+}
+
+:focus-visible {
+	outline: 2px solid #ced7d7;
+	outline-offset: 3px;
+	border-radius: 6px;
+}
+
+.genre-label {
+	display: block;
+	margin: 1.33em 0;
+	color: #757575;
+	font-weight: bold;
+	font-style: italic;
 }
 
 select {
@@ -38,7 +66,6 @@ select {
 	font-size: 14px;
 	font-family: Arial, sans-serif;
 	font-style: italic;
-	outline: none;
 	cursor: pointer;
 }
 
@@ -104,15 +131,13 @@ input[type="range"]::-webkit-slider-thumb {
 	margin: 5px;
 }
 
-.botones input {
-	width: 30px;
+.botones button {
+	width: 50px;
 	padding: 10px;
-	border: none;
 	transition: transform 0.2s;
-	-webkit-app-region: no-drag;
 }
 
-.botones input:hover {
+.botones button:hover {
 	transform: scale(1.15);
 }
 
@@ -143,22 +168,7 @@ input[type="range"]::-webkit-slider-thumb {
 	margin-right: 10px;
 }
 
-.window-controls input {
-	cursor: pointer;
+.window-controls button {
 	width: 25px;
 	height: 25px;
-}
-
-.window-controls button {
-	width: 40px;
-	height: 30px;
-	border: none;
-	background: transparent;
-	color: white;
-	cursor: pointer;
-	font-size: 14px;
-}
-
-.window-controls button:hover {
-	background: rgba(255, 255, 255, 0.15);
 }
