@@ -1,5 +1,5 @@
 const { app, BrowserWindow, ipcMain } = require("electron");
-const path = require("path");
+const path = require("node:path");
 
 let win;
 
@@ -8,12 +8,12 @@ function createWindow() {
 		width: 400,
 		height: 720,
 		resizable: false,
-		frame: false, // custom title bar, see index.html
+		frame: false,
 		icon: path.join(__dirname, "img/icon.png"),
 		webPreferences: {
-			contextIsolation: true, // required to use the preload script safely
-			preload: path.join(__dirname, "preload.js")
-		}
+			contextIsolation: true,
+			preload: path.join(__dirname, "preload.js"),
+		},
 	});
 
 	win.loadFile("index.html");
@@ -30,6 +30,5 @@ app.on("activate", () => {
 	if (BrowserWindow.getAllWindows().length === 0) createWindow();
 });
 
-// Window control buttons
 ipcMain.on("minimize", () => win?.minimize());
 ipcMain.on("close", () => win?.close());

@@ -1,6 +1,9 @@
+import { formatTime, progressPercent, wrapIndex } from "./playback.js";
+import { GENRES } from "./tracks.js";
+
 const $ = (id) => document.getElementById(id);
 
-const audio = $("audio");
+const audio = new Audio();
 const progress = $("progress");
 const currentEl = $("current");
 const durationEl = $("duration");
@@ -11,13 +14,6 @@ const genreSelect = $("genreSelect");
 
 let currentGenre = Object.keys(GENRES)[0];
 let index = 0;
-
-function formatTime(time) {
-	if (!Number.isFinite(time)) return "0:00";
-	const min = Math.floor(time / 60);
-	const sec = Math.floor(time % 60).toString().padStart(2, "0");
-	return `${min}:${sec}`;
-}
 
 function loadTrack() {
 	const genre = GENRES[currentGenre];
@@ -46,21 +42,16 @@ function toggleMute() {
 }
 
 function changeTrack(step) {
-	const total = GENRES[currentGenre].tracks.length;
-	index = (index + step + total) % total;
+	index = wrapIndex(index, step, GENRES[currentGenre].tracks.length);
 	loadTrack();
 	play();
 }
 
 function updateProgress() {
-	const duration = audio.duration;
+	const percent = progressPercent(audio.currentTime, audio.duration);
 	progress.value = audio.currentTime;
 	currentEl.textContent = formatTime(audio.currentTime);
-	const percent = Number.isFinite(duration) && duration > 0
-		? (audio.currentTime / duration) * 100
-		: 0;
-	progress.style.background =
-		`linear-gradient(to right, #ced7d7 ${percent}%, #444 ${percent}%)`;
+	progress.style.background = `linear-gradient(to right, #ced7d7 ${percent}%, #444 ${percent}%)`;
 }
 
 for (const [key, genre] of Object.entries(GENRES)) {
