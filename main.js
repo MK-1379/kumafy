@@ -12,9 +12,13 @@ function createWindow() {
 		icon: path.join(__dirname, "img/icon.png"),
 		webPreferences: {
 			contextIsolation: true,
+			sandbox: true,
 			preload: path.join(__dirname, "preload.js"),
 		},
 	});
+
+	win.webContents.setWindowOpenHandler(() => ({ action: "deny" }));
+	win.webContents.on("will-navigate", (event) => event.preventDefault());
 
 	win.loadFile("index.html");
 	win.removeMenu();

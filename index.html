@@ -3,6 +3,7 @@
 
 <head>
 	<meta charset="UTF-8">
+	<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; media-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Kumafy</title>
 	<link rel="stylesheet" href="styles.css">
@@ -12,8 +13,8 @@
 	<div class="titlebar">
 		<div class="drag-area"></div>
 		<div class="window-controls">
-			<input type="image" src="img/MinAN.png" id="minBtn" alt="Minimize">
-			<input type="image" src="img/CrossAN.png" id="closeBtn" alt="Close">
+			<button type="button" id="minBtn" aria-label="Minimize"><img src="img/MinAN.png" alt=""></button>
+			<button type="button" id="closeBtn" aria-label="Close"><img src="img/CrossAN.png" alt=""></button>
 		</div>
 	</div>
 	<br><br>
@@ -24,11 +25,13 @@
 		</div>
 	</div>
 
-	<h4>Genre</h4>
-	<select id="genreSelect" aria-label="Genre"></select>
+	<label for="genreSelect" class="genre-label">Genre</label>
+	<select id="genreSelect"></select>
 
-	<h2 id="title">Title</h2>
-	<h3 id="artist">Artist</h3>
+	<div aria-live="polite">
+		<h2 id="title">Title</h2>
+		<h3 id="artist">Artist</h3>
+	</div>
 
 	<div id="tiempo">
 		<span id="current">0:00</span> / <span id="duration">0:00</span>
@@ -39,12 +42,12 @@
 	<br><br><br>
 
 	<div class="botones">
-		<input type="image" src="img/PrevAN.png" id="prevBtn" alt="Previous">
-		<input type="image" src="img/PlayAN.png" id="playBtn" alt="Play">
-		<input type="image" src="img/PauseAN.png" id="pauseBtn" alt="Pause">
-		<input type="image" src="img/StopAN.png" id="stopBtn" alt="Stop">
-		<input type="image" src="img/MuteAN.png" id="muteBtn" alt="Mute">
-		<input type="image" src="img/NextAN.png" id="nextBtn" alt="Next">
+		<button type="button" id="prevBtn" aria-label="Previous"><img src="img/PrevAN.png" alt=""></button>
+		<button type="button" id="playBtn" aria-label="Play"><img src="img/PlayAN.png" alt=""></button>
+		<button type="button" id="pauseBtn" aria-label="Pause"><img src="img/PauseAN.png" alt=""></button>
+		<button type="button" id="stopBtn" aria-label="Stop"><img src="img/StopAN.png" alt=""></button>
+		<button type="button" id="muteBtn" aria-label="Mute" aria-pressed="false"><img src="img/MuteAN.png" alt=""></button>
+		<button type="button" id="nextBtn" aria-label="Next"><img src="img/NextAN.png" alt=""></button>
 	</div>
 
 	<script type="module" src="js/player.js"></script>

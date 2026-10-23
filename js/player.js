@@ -39,6 +39,7 @@ function stop() {
 
 function toggleMute() {
 	audio.muted = !audio.muted;
+	$("muteBtn").setAttribute("aria-pressed", String(audio.muted));
 }
 
 function changeTrack(step) {
