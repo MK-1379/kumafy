@@ -42,17 +42,17 @@
 	<input type="range" id="progress" min="0" value="0" step="0.1" aria-label="Seek">
 
 	<div class="botones">
-		<button type="button" id="prevBtn" aria-label="Previous"><img src="img/PrevAN.png" alt=""></button>
-		<button type="button" id="playBtn" aria-label="Play"><img src="img/PlayAN.png" alt=""></button>
+		<button type="button" id="prevBtn" title="Previous (P)" aria-keyshortcuts="P" aria-label="Previous"><img src="img/PrevAN.png" alt=""></button>
+		<button type="button" id="playBtn" title="Play/Pause (Space)" aria-keyshortcuts="Space" aria-label="Play"><img src="img/PlayAN.png" alt=""></button>
 		<button type="button" id="stopBtn" aria-label="Stop"><img src="img/StopAN.png" alt=""></button>
-		<button type="button" id="nextBtn" aria-label="Next"><img src="img/NextAN.png" alt=""></button>
+		<button type="button" id="nextBtn" title="Next (N)" aria-keyshortcuts="N" aria-label="Next"><img src="img/NextAN.png" alt=""></button>
 	</div>
 
 	<div class="botones secundarios">
-		<button type="button" id="shuffleBtn" class="toggle" aria-label="Shuffle" aria-pressed="false"><img src="img/ShuffleAN.svg" alt=""></button>
-		<button type="button" id="repeatBtn" class="toggle" aria-label="Repeat: off" aria-pressed="false"><img src="img/RepeatAN.svg" alt=""></button>
-		<button type="button" id="listBtn" aria-label="Track list" aria-expanded="false" aria-controls="trackPanel"><img src="img/ListAN.svg" alt=""></button>
-		<button type="button" id="muteBtn" aria-label="Mute" aria-pressed="false"><img src="img/VolumeAN.svg" alt=""></button>
+		<button type="button" id="shuffleBtn" title="Shuffle (S)" aria-keyshortcuts="S" class="toggle" aria-label="Shuffle" aria-pressed="false"><img src="img/ShuffleAN.svg" alt=""></button>
+		<button type="button" id="repeatBtn" title="Repeat (R)" aria-keyshortcuts="R" class="toggle" aria-label="Repeat: off" aria-pressed="false"><img src="img/RepeatAN.svg" alt=""></button>
+		<button type="button" id="listBtn" title="Track list (L)" aria-keyshortcuts="L" aria-label="Track list" aria-expanded="false" aria-controls="trackPanel"><img src="img/ListAN.svg" alt=""></button>
+		<button type="button" id="muteBtn" title="Mute (M)" aria-keyshortcuts="M" aria-label="Mute" aria-pressed="false"><img src="img/VolumeAN.svg" alt=""></button>
 		<input type="range" id="volume" min="0" max="1" step="0.01" value="1" aria-label="Volume">
 	</div>
 

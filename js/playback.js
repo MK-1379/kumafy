@@ -47,3 +47,8 @@ export function positionAfterEnd(position, total, repeat) {
 	if (position < total - 1) return { position: position + 1, autoplay: true };
 	return { position: 0, autoplay: repeat === "all" };
 }
+
+export function stepVolume(volume, delta) {
+	const next = Math.round((volume + delta) * 100) / 100;
+	return Math.min(1, Math.max(0, next));
+}
