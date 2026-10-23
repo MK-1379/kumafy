@@ -3,7 +3,7 @@
 
 <head>
 	<meta charset="UTF-8">
-	<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; media-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+	<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' blob:; media-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Kumafy</title>
 	<link rel="stylesheet" href="styles.css">
@@ -21,6 +21,7 @@
 	<div class="centro">
 		<div class="imgcont">
 			<img id="cover" alt="Genre cover">
+			<canvas id="visualizer" class="visualizer" aria-hidden="true"></canvas>
 			<div id="trackPanel" class="track-panel" hidden>
 				<ol id="trackList" aria-label="Tracks"></ol>
 			</div>

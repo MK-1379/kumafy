@@ -164,8 +164,35 @@ input[type="range"]::-webkit-slider-thumb {
 	margin-left: 8px;
 }
 
+.visualizer {
+	position: absolute;
+	left: 12px;
+	right: 12px;
+	bottom: 0;
+	width: calc(100% - 24px);
+	height: 70px;
+	z-index: 1;
+	pointer-events: none;
+}
+
+.imgcont::after {
+	content: "";
+	position: absolute;
+	inset: auto 0 0;
+	height: 90px;
+	background: linear-gradient(to top, rgba(0, 0, 0, 0.55), transparent);
+	opacity: 0;
+	transition: opacity 0.4s;
+	pointer-events: none;
+}
+
+.imgcont.is-playing::after {
+	opacity: 1;
+}
+
 .track-panel {
 	position: absolute;
+	z-index: 2;
 	inset: 0;
 	overflow-y: auto;
 	background: rgba(0, 0, 0, 0.85);
