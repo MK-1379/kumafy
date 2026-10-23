@@ -4,8 +4,10 @@ import {
 	nextRepeatMode,
 	positionAfterEnd,
 	progressPercent,
+	stepVolume,
 	wrapIndex,
 } from "./playback.js";
+import { actionForKey, elementHandlesKey } from "./shortcuts.js";
 import { loadState, saveState } from "./storage.js";
 import { GENRES } from "./tracks.js";
 
@@ -28,6 +30,8 @@ const listBtn = $("listBtn");
 const trackPanel = $("trackPanel");
 const trackList = $("trackList");
 
+const SEEK_STEP = 5;
+const VOLUME_STEP = 0.05;
 const REPEAT_LABELS = {
 	off: "Repeat: off",
 	all: "Repeat: all",
@@ -63,6 +67,7 @@ function loadTrack() {
 	artistEl.textContent = track.artist;
 	coverEl.src = genre.cover;
 	highlightCurrentTrack();
+	updateMediaMetadata(track, genre);
 	persist();
 }
 
@@ -159,10 +164,119 @@ function highlightCurrentTrack() {
 	}
 }
 
-function toggleTrackList() {
-	const open = trackPanel.hidden;
+function setTrackListOpen(open) {
 	trackPanel.hidden = !open;
 	listBtn.setAttribute("aria-expanded", String(open));
+}
+
+function toggleTrackList() {
+	setTrackListOpen(trackPanel.hidden);
+}
+
+function toggleMute() {
+	state.muted = !state.muted;
+	renderVolume();
+	persist();
+}
+
+function setVolume(value) {
+	state.volume = value;
+	if (state.volume > 0) state.muted = false;
+	renderVolume();
+	persist();
+}
+
+function toggleShuffle() {
+	state.shuffle = !state.shuffle;
+	rebuildOrder();
+	renderModes();
+	persist();
+}
+
+function cycleRepeat() {
+	state.repeat = nextRepeatMode(state.repeat);
+	renderModes();
+	persist();
+}
+
+function seekTo(seconds) {
+	if (!Number.isFinite(audio.duration)) return;
+	audio.currentTime = Math.min(audio.duration, Math.max(0, seconds));
+}
+
+function seekBy(seconds) {
+	seekTo(audio.currentTime + seconds);
+}
+
+const shortcutActions = {
+	togglePlay,
+	seekForward: () => seekBy(SEEK_STEP),
+	seekBackward: () => seekBy(-SEEK_STEP),
+	volumeUp: () => setVolume(stepVolume(state.volume, VOLUME_STEP)),
+	volumeDown: () => setVolume(stepVolume(state.volume, -VOLUME_STEP)),
+	next: () => changeTrack(1),
+	previous: () => changeTrack(-1),
+	mute: toggleMute,
+	shuffle: toggleShuffle,
+	repeat: cycleRepeat,
+	trackList: toggleTrackList,
+	closeTrackList: () => setTrackListOpen(false),
+};
+
+function handleKeydown(event) {
+	if (elementHandlesKey(event.target, event.key)) return;
+	const action = actionForKey(event);
+	if (!action) return;
+	event.preventDefault();
+	shortcutActions[action]();
+}
+
+const hasMediaSession = "mediaSession" in navigator;
+
+function updateMediaMetadata(track, genre) {
+	if (!hasMediaSession) return;
+	navigator.mediaSession.metadata = new MediaMetadata({
+		title: track.title,
+		artist: track.artist,
+		album: genre.label,
+		artwork: [
+			{
+				src: new URL(genre.cover, location.href).href,
+				sizes: "600x600",
+				type: "image/jpeg",
+			},
+		],
+	});
+}
+
+function updatePositionState() {
+	if (!hasMediaSession || !Number.isFinite(audio.duration)) return;
+	navigator.mediaSession.setPositionState({
+		duration: audio.duration,
+		playbackRate: audio.playbackRate,
+		position: Math.min(audio.currentTime, audio.duration),
+	});
+}
+
+function setupMediaSession() {
+	if (!hasMediaSession) return;
+	const handlers = {
+		play,
+		pause: () => audio.pause(),
+		stop,
+		previoustrack: () => changeTrack(-1),
+		nexttrack: () => changeTrack(1),
+		seekbackward: (details) => seekBy(-(details.seekOffset ?? SEEK_STEP)),
+		seekforward: (details) => seekBy(details.seekOffset ?? SEEK_STEP),
+		seekto: (details) => seekTo(details.seekTime),
+	};
+	for (const [action, handler] of Object.entries(handlers)) {
+		try {
+			navigator.mediaSession.setActionHandler(action, handler);
+		} catch {
+			console.warn(`Media Session action not supported: ${action}`);
+		}
+	}
 }
 
 function updateProgress() {
@@ -194,40 +308,22 @@ $("nextBtn").addEventListener("click", () => changeTrack(1));
 $("prevBtn").addEventListener("click", () => changeTrack(-1));
 listBtn.addEventListener("click", toggleTrackList);
 
-muteBtn.addEventListener("click", () => {
-	state.muted = !state.muted;
-	renderVolume();
-	persist();
-});
-
-volume.addEventListener("input", () => {
-	state.volume = Number(volume.value);
-	if (state.volume > 0) state.muted = false;
-	renderVolume();
-	persist();
-});
-
-shuffleBtn.addEventListener("click", () => {
-	state.shuffle = !state.shuffle;
-	rebuildOrder();
-	renderModes();
-	persist();
-});
-
-repeatBtn.addEventListener("click", () => {
-	state.repeat = nextRepeatMode(state.repeat);
-	renderModes();
-	persist();
-});
+muteBtn.addEventListener("click", toggleMute);
+volume.addEventListener("input", () => setVolume(Number(volume.value)));
+shuffleBtn.addEventListener("click", toggleShuffle);
+repeatBtn.addEventListener("click", cycleRepeat);
+document.addEventListener("keydown", handleKeydown);
 
 audio.addEventListener("loadedmetadata", () => {
 	progress.max = audio.duration;
 	durationEl.textContent = formatTime(audio.duration);
+	updatePositionState();
 });
 audio.addEventListener("timeupdate", updateProgress);
 audio.addEventListener("ended", handleEnded);
 audio.addEventListener("play", renderPlayButton);
 audio.addEventListener("pause", renderPlayButton);
+audio.addEventListener("seeked", updatePositionState);
 progress.addEventListener("input", () => {
 	audio.currentTime = progress.value;
 });
@@ -236,6 +332,7 @@ $("minBtn").addEventListener("click", () => window.api?.minimize());
 $("closeBtn").addEventListener("click", () => window.api?.close());
 
 genreSelect.value = state.genre;
+setupMediaSession();
 rebuildOrder();
 renderTrackList();
 renderVolume();

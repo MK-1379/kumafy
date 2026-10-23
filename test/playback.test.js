@@ -5,6 +5,7 @@ import {
 	nextRepeatMode,
 	positionAfterEnd,
 	progressPercent,
+	stepVolume,
 	wrapIndex,
 } from "../js/playback.js";
 
@@ -125,5 +126,21 @@ describe("positionAfterEnd", () => {
 			position: 0,
 			autoplay: false,
 		});
+	});
+});
+
+describe("stepVolume", () => {
+	it("raises and lowers the volume", () => {
+		expect(stepVolume(0.5, 0.05)).toBe(0.55);
+		expect(stepVolume(0.5, -0.05)).toBe(0.45);
+	});
+
+	it("avoids floating point leftovers", () => {
+		expect(stepVolume(0.1, 0.2)).toBe(0.3);
+	});
+
+	it("stays between 0 and 1", () => {
+		expect(stepVolume(0.98, 0.05)).toBe(1);
+		expect(stepVolume(0.02, -0.05)).toBe(0);
 	});
 });
