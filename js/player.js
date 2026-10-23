@@ -15,6 +15,8 @@ import { createVisualizer } from "./visualizer.js";
 
 const $ = (id) => document.getElementById(id);
 
+document.documentElement.classList.toggle("is-web", !window.api);
+
 const audio = new Audio();
 const progress = $("progress");
 const volume = $("volume");
